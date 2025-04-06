@@ -6,7 +6,7 @@ IMPORTANT ❗ ❗ ❗ Please remember to destroy all the resources after each wo
 
    ***Zespół 7***
 
-   ***https://github.com/KarolZebala/tbd-workshop-1-z7https://github.com/KarolZebala/tbd-workshop-1-z7***
+   ***https://github.com/KarolZebala/tbd-workshop-1-z7***
    
 2. Follow all steps in README.md.
 
