@@ -21,6 +21,8 @@ IMPORTANT ❗ ❗ ❗ Please remember to destroy all the resources after each wo
     
     ***place the screenshot from GA after succesfull application of release***
 
+    ![img.png](doc/deploy/successful_deploy.png)
+
 
 6. Analyze terraform code. Play with terraform plan, terraform graph to investigate different modules.
 
@@ -49,12 +51,36 @@ create a sample usage profiles and add it to the Infracost task in CI/CD pipelin
 10. Create a BigQuery dataset and an external table using SQL
     
     ***place the code and output here***
-   
-    ***why does ORC not require a table schema?***
+    
+    ```sql
+    --utworzenie schematu
+    CREATE SCHEMA IF NOT EXISTS test OPTIONS(location = 'europe-west1');
 
+    --utworzenie tabeli w formacie ORC, dane są w zasobie gs://tbd-2025l-9913-data/data/shakespeare/
+    CREATE OR REPLACE EXTERNAL TABLE test.shakespeare
+    OPTIONS (
+    format = 'ORC',
+    uris = ['gs://tbd-2025l-9913-data/data/shakespeare/*.orc']
+    );
+
+    --pobranie danych
+    select * from test.shakespeare
+    ```
+   Przykładowy wynik zapytania
+   ![img.png](doc/figures/big_query/big_query_results.png)
+
+    ***why does ORC not require a table schema?***
+    ORC nie wymaga zewnętrznego schematu, poniewaz zawiera plik zawiera metadane, w których znajdują się informacje
+    odnośnie schematu
 11. Find and correct the error in spark-job.py
 
     ***describe the cause and how to find the error***
+    Problemem w pliku jest na sztywno wpisana wartość DATA_BUCKET. Po poprawieniu jej na ściezkę pasującą do naszego
+    projektu wszystko działa w porządku. Problem został właściwie od razu zauwazony po otwarciu pliku
+    
+    ![img.png](doc/figures/big_query/corrected_data.png)
+
+
 
 12. Add support for preemptible/spot instances in a Dataproc cluster
 
