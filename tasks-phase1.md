@@ -52,6 +52,7 @@ create a sample usage profiles and add it to the Infracost task in CI/CD pipelin
    ![img.png](doc/figures/ingracost/infracost-wynik.png)
 
    Dodano równie w cicd podsumowanie - trzeba było wskazać na plik infracost-usage.yml oraz na Githubie dodać klucz do api jako sekret `INFRACOST_API_KEY`
+   ![img.png](doc/figures/ingracost/github-wynik.png)
 
 10. Create a BigQuery dataset and an external table using SQL
     
