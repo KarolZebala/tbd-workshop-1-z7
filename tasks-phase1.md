@@ -27,7 +27,11 @@ IMPORTANT ❗ ❗ ❗ Please remember to destroy all the resources after each wo
 6. Analyze terraform code. Play with terraform plan, terraform graph to investigate different modules.
 
     ***describe one selected module and put the output of terraform graph for this module here***
-   
+
+    Moduł composer odpowiada za utworzenie i konfigurację środowiska Cloud Composer w Google Cloud – jest to zarządzany Apache Airflow, służący do automatyzacji i orkiestracji przepływów danych. W module tworzony jest dedykowany service account (tbd-composer-sa), przypisywane są do niego odpowiednie role IAM (np. composer.worker, dataproc.editor) oraz włączana jest potrzebna usługa API (composer.googleapis.com). Dodatkowo tworzona jest osobna podsieć VPC (composer-subnet) z odpowiednimi ustawieniami logowania i brakiem dostępu IPv6 do zasobów Google. Następnie moduł korzysta z oficjalnego Terraform Module for Composer (terraform-google-modules/composer/google) do utworzenia właściwego środowiska Composer 2 – wraz z precyzyjnie określoną ilością CPU, RAM i workerów dla schedulerów, webservera i workerów. Moduł wspiera przekazywanie zmiennych środowiskowych do Airflow, takich jak ID projektu, region, nazwa klastra Dataproc czy repozytorium DBT.
+
+    ![img.png](graph.png)
+
 7. Reach YARN UI
    
    ***place the command you used for setting up the tunnel, the port and the screenshot of YARN UI here***

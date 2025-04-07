@@ -1,0 +1,59 @@
+digraph G {
+  rankdir = "RL";
+  node [shape = rect, fontname = "sans-serif"];
+  
+  // Moduł Composer
+  subgraph "cluster_module.composer" {
+    label = "module.composer"
+    fontname = "sans-serif"
+    "module.composer.google_compute_subnetwork.composer-subnet" [label="google_compute_subnetwork.composer-subnet"];
+    "module.composer.google_project_iam_member.composer-member" [label="google_project_iam_member.composer-member"];
+    "module.composer.google_project_iam_member.dataproc-editor-iam" [label="google_project_iam_member.dataproc-editor-iam"];
+    "module.composer.google_project_iam_member.dataproc-sa-user-iam" [label="google_project_iam_member.dataproc-sa-user-iam"];
+    "module.composer.google_project_service.api" [label="google_project_service.api"];
+    "module.composer.google_service_account.tbd-composer-sa" [label="google_service_account.tbd-composer-sa"];
+  }
+  
+  subgraph "cluster_module.composer.module.composer" {
+    label = "module.composer.module.composer"
+    fontname = "sans-serif"
+    "module.composer.module.composer.data.google_project.project" [label="data.google_project.project"];
+    "module.composer.module.composer.google_composer_environment.composer_env" [label="google_composer_environment.composer_env"];
+    "module.composer.module.composer.google_project_iam_member.composer_agent_service_account" [label="google_project_iam_member.composer_agent_service_account"];
+  }
+  
+  // Połączenia w module Composer
+  "module.composer.google_compute_subnetwork.composer-subnet" -> "module.vpc.google_compute_firewall.default-internal-allow-all";
+  "module.composer.google_compute_subnetwork.composer-subnet" -> "module.vpc.google_compute_firewall.fw-allow-ingress-from-iap";
+  "module.composer.google_compute_subnetwork.composer-subnet" -> "module.vpc.module.cloud-router.google_compute_router_nat.nats";
+  "module.composer.google_compute_subnetwork.composer-subnet" -> "module.vpc.module.vpc.module.firewall_rules.google_compute_firewall.rules";
+  "module.composer.google_compute_subnetwork.composer-subnet" -> "module.vpc.module.vpc.module.firewall_rules.google_compute_firewall.rules_ingress_egress";
+  "module.composer.google_compute_subnetwork.composer-subnet" -> "module.vpc.module.vpc.module.routes.google_compute_route.route";
+  "module.composer.google_compute_subnetwork.composer-subnet" -> "module.vpc.module.vpc.module.vpc.google_compute_shared_vpc_host_project.shared_vpc_host";
+  
+  "module.composer.google_project_iam_member.composer-member" -> "module.composer.google_service_account.tbd-composer-sa";
+  "module.composer.google_project_iam_member.dataproc-editor-iam" -> "module.composer.google_service_account.tbd-composer-sa";
+  "module.composer.google_project_iam_member.dataproc-sa-user-iam" -> "module.composer.google_service_account.tbd-composer-sa";
+  "module.composer.google_project_service.api" -> "module.vpc.google_compute_firewall.default-internal-allow-all";
+  "module.composer.google_project_service.api" -> "module.vpc.google_compute_firewall.fw-allow-ingress-from-iap";
+  "module.composer.google_project_service.api" -> "module.vpc.module.cloud-router.google_compute_router_nat.nats";
+  "module.composer.google_project_service.api" -> "module.vpc.module.vpc.module.firewall_rules.google_compute_firewall.rules";
+  "module.composer.google_project_service.api" -> "module.vpc.module.vpc.module.firewall_rules.google_compute_firewall.rules_ingress_egress";
+  "module.composer.google_project_service.api" -> "module.vpc.module.vpc.module.routes.google_compute_route.route";
+  "module.composer.google_project_service.api" -> "module.vpc.module.vpc.module.vpc.google_compute_shared_vpc_host_project.shared_vpc_host";
+  
+  "module.composer.google_service_account.tbd-composer-sa" -> "module.vpc.google_compute_firewall.default-internal-allow-all";
+  "module.composer.google_service_account.tbd-composer-sa" -> "module.vpc.google_compute_firewall.fw-allow-ingress-from-iap";
+  "module.composer.google_service_account.tbd-composer-sa" -> "module.vpc.module.cloud-router.google_compute_router_nat.nats";
+  "module.composer.google_service_account.tbd-composer-sa" -> "module.vpc.module.vpc.module.firewall_rules.google_compute_firewall.rules";
+  "module.composer.google_service_account.tbd-composer-sa" -> "module.vpc.module.vpc.module.firewall_rules.google_compute_firewall.rules_ingress_egress";
+  "module.composer.google_service_account.tbd-composer-sa" -> "module.vpc.module.vpc.module.routes.google_compute_route.route";
+  "module.composer.google_service_account.tbd-composer-sa" -> "module.vpc.module.vpc.module.vpc.google_compute_shared_vpc_host_project.shared_vpc_host";
+  
+  "module.composer.module.composer.data.google_project.project" -> "module.composer.google_project_iam_member.composer-member";
+  "module.composer.module.composer.data.google_project.project" -> "module.composer.google_project_service.api";
+  "module.composer.module.composer.google_composer_environment.composer_env" -> "module.composer.google_compute_subnetwork.composer-subnet";
+  "module.composer.module.composer.google_composer_environment.composer_env" -> "module.composer.module.composer.google_project_iam_member.composer_agent_service_account";
+  "module.composer.module.composer.google_composer_environment.composer_env" -> "module.dataproc.google_dataproc_cluster.tbd-dataproc-cluster";
+  "module.composer.module.composer.google_project_iam_member.composer_agent_service_account" -> "module.composer.module.composer.data.google_project.project";
+}
