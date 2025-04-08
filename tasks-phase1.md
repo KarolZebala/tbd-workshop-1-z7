@@ -35,7 +35,13 @@ IMPORTANT ❗ ❗ ❗ Please remember to destroy all the resources after each wo
 7. Reach YARN UI
    
    ***place the command you used for setting up the tunnel, the port and the screenshot of YARN UI here***
-   
+        
+    Po zapewnieniu odpowiednich dostępów do IAP skorzystano z polecenia uruchamiającego tunelowanie SSH do portu 8088 w klastrze dataproc -m przez lokalny port 8088:
+    
+    gcloud compute ssh tbd-cluster-m --project=tbd-2025l-9913 --zone=europe-west1-d --tunnel-through-iap -- -L 8088:localhost:8088
+
+    ![img.png](yarn_ui_screenshot.png) 
+
 8. Draw an architecture diagram (e.g. in draw.io) that includes:
     1. VPC topology with service assignment to subnets
     2. Description of the components of service accounts
@@ -97,5 +103,15 @@ create a sample usage profiles and add it to the Infracost task in CI/CD pipelin
 12. Add support for preemptible/spot instances in a Dataproc cluster
 
     ***place the link to the modified file and inserted terraform code***
-    
+    Link to modified file: https://github.com/KarolZebala/tbd-workshop-1-z7/blob/master/modules/dataproc/main.tf
+    Inserted code in modules/dataproc/main.tf:
+
+            preemptible_worker_config {
+            num_instances = 2
+            preemptibility = "PREEMPTIBLE"
+            disk_config {
+              boot_disk_type    = "pd-standard"
+              boot_disk_size_gb = 100
+            }
+          }
     
